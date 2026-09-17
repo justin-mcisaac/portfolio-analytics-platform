@@ -1,11 +1,24 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
+from sqlalchemy import text
+from sqlalchemy.orm import Session
+
+from app.core.config import settings
+from app.database import get_db
+
 
 app = FastAPI(
-    title="Portfolio Analytics API",
-    version="0.1.0",
+    title=settings.app_name,
+    version=settings.app_version,
 )
 
 
 @app.get("/api/v1/health")
-def health_check() -> dict[str, str]:
-    return {"status": "healthy"}
+def health_check(
+    database_session: Session = Depends(get_db),
+) -> dict[str, str]:
+    database_session.execute(text("SELECT 1"))
+
+    return {
+        "status": "healthy",
+        "database": "connected",
+    }

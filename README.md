@@ -49,12 +49,16 @@ This project demonstrates full-stack software development through:
 
 ## Current Status
 
-Initial project setup is complete:
+The backend foundation currently includes:
 
-- React frontend runs locally
-- FastAPI backend runs locally
-- Health-check endpoint is available
-- Interactive API documentation is available
+- React and TypeScript frontend
+- FastAPI REST API
+- PostgreSQL development database
+- SQLAlchemy database connection
+- Alembic database migrations
+- Initial portfolio model
+- Database-aware health endpoint
+- Automated backend integration test
 
 ## Local Development
 
@@ -80,7 +84,57 @@ fastapi dev app/main.py
 The backend runs at `http://127.0.0.1:8000`.
 
 API documentation is available at `http://127.0.0.1:8000/docs`.
+### Database
 
+Start PostgreSQL from the project root:
+
+```bash
+docker compose up -d
+```
+
+Check its status:
+
+```bash
+docker compose ps
+```
+
+Stop PostgreSQL without deleting its data:
+
+```bash
+docker compose down
+```
+
+### Database Migrations
+
+Run migration commands from the `backend` directory with the Python virtual environment active.
+
+Apply all migrations:
+
+```bash
+alembic upgrade head
+```
+
+Check the current revision:
+
+```bash
+alembic current
+```
+
+Generate a migration after changing the database models:
+
+```bash
+alembic revision --autogenerate -m "describe the schema change"
+```
+
+### Backend Tests
+
+With PostgreSQL running:
+
+```bash
+cd backend
+source .venv/bin/activate
+pytest -v
+```
 ## Project Structure
 
 ```text

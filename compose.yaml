@@ -1,0 +1,23 @@
+services:
+  database:
+    image: postgres:17-alpine
+    container_name: portfolio-analytics-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: portfolio_user
+      POSTGRES_PASSWORD: portfolio_password
+      POSTGRES_DB: portfolio_analytics
+    ports:
+      - "5432:5432"
+    volumes:
+      - portfolio_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U portfolio_user -d portfolio_analytics
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  portfolio_postgres_data:
